@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
-import logo from './logo.svg'
+import logo from './logo.png'
 import './App.css'
 
 class App extends Component {
