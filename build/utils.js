@@ -71,15 +71,31 @@ exports.styleLoaders = function (options) {
 
   for (const extension in loaders) {
     const loader = loaders[extension]
-    output.push({
+    const obj = {
       test: new RegExp('\\.' + extension + '$'),
       use: loader
-    })
+    }
+    // css module https://github.com/camsong/blog/issues/5
+    if (extension === 'css' && config.build.cssModule) {
+      const object = JSON.parse(JSON.stringify(obj))
+      const cssLoader = object.use.find(item => item.loader === 'css-loader')
+      cssLoader && (cssLoader.options = {
+        sourceMap: options.sourceMap,
+        modules: true,
+        localIdentName: '[name]--[local]--[hash:base64:5]'
+      })
+      // local
+      output.push(Object.assign({}, object, { exclude: /node_modules/ },{ test: /.css$/ }))
+      // node Module
+      output.push(Object.assign(obj, { include: /node_modules/ }))
+
+    } else {
+      output.push(obj)
+    }
   }
 
   return output
 }
-
 exports.createNotifierCallback = () => {
   const notifier = require('node-notifier')
 
