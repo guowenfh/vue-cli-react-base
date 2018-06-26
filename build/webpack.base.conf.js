@@ -43,7 +43,6 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('node_modules/webpack-dev-server/client')],
-        loader: require.resolve('babel-loader'),
         options: {
           babelrc: true,
           // This is a feature of `babel-loader` for Webpack (not Babel itself).
