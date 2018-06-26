@@ -62,7 +62,8 @@ exports.cssLoaders = function(options) {
       localIdentName: '[name]--[local]--[hash:base64:5]'
     }),
     postcss: generateLoaders(),
-    less: generateLoaders('less'),
+    // https://github.com/ant-design/ant-design/issues/7927#issuecomment-372513256 less 3.x add
+    less: generateLoaders('less',{javascriptEnabled:true}),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
