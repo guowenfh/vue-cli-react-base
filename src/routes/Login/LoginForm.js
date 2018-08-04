@@ -6,9 +6,7 @@ import { userLogin, getUserInfo } from 'common/api'
 const FormItem = Form.Item
 class NormalLoginForm extends Component {
   state = {
-    loading: false,
-    loginPrompt: '',
-    loginstatus: ''
+    loading: false
   }
   handleSubmit = e => {
     e.preventDefault()
@@ -20,42 +18,34 @@ class NormalLoginForm extends Component {
         userName: values.userName,
         password: md5(values.password)
       }
-      this.setState({ loginPrompt: '', loginstatus: '', loading: true })
+      this.setState({ loading: true })
       userLogin(params)
         .then(data => {
-          if (data.loginSuccess) {
+          if (data.success) {
             return data
           }
           return Promise.reject('登录失败')
         })
-        .then(data => {
-          return getUserInfo({}, true).then(user => {
-            return {
-              user,
-              loginInfo: data
-            }
-          })
-        })
-        .then(({ user }) => {
+        .then(() => {
           this.setState({ loading: false })
           this.props.history.push('/index/PictureDetails')
         })
         .catch(err => {
-          this.setState({ loginPrompt: '用户名或密码错误', loginstatus: 'error', loading: false })
+          this.setState({ loading: false })
         })
     })
   }
   render() {
     const { getFieldDecorator } = this.props.form
-    const { loading, loginPrompt, loginstatus } = this.state
+    const { loading } = this.state
     return (
       <Form onSubmit={this.handleSubmit}>
-        <FormItem validateStatus={loginstatus}>
+        <FormItem>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: '请输入用户名!' }]
           })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />)}
         </FormItem>
-        <FormItem validateStatus={loginstatus} help={loginPrompt}>
+        <FormItem>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: '请输入密码!' }]
           })(<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />)}

@@ -11,7 +11,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "antd": "^3.7.1",
+    "antd": "^3.7.3",
     "babel-plugin-import": "^1.8.0",
     "history": "^4.7.2",
     "js-md5": "^0.7.3",
@@ -68,6 +68,7 @@
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
+  "theme": "./src/theme.js",
   "engines": {
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"

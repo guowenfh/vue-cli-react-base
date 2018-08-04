@@ -14,7 +14,7 @@ export function getFontContent(fontMap = {}) {
  * @returns
  */
 export function userLogin(fontMap = {}) {
-  return Promise.resolve({})
+  return Promise.resolve({success:true})
 }
 /**
  * 获取字体生成的返回。

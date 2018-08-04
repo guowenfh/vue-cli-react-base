@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const fs = require('fs')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
@@ -8,6 +9,25 @@ exports.assetsPath = function(_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production' ? config.build.assetsSubDirectory : config.dev.assetsSubDirectory
 
   return path.posix.join(assetsSubDirectory, _path)
+}
+
+exports.getThemeConfig = function () {
+  const pkgPath = path.join(__dirname, '../package.json')
+  const pkg = fs.existsSync(pkgPath) ? require(pkgPath) : {}
+  let theme = {}
+  if (pkg.theme && typeof pkg.theme === 'string') {
+      let cfgPath = pkg.theme
+      // relative path
+      if (cfgPath.charAt(0) === '.') {
+          cfgPath = path.resolve(__dirname, '..', cfgPath)
+          console.error(cfgPath)
+      }
+      const config = require(cfgPath)
+      theme = config
+  } else if (pkg.theme && typeof pkg.theme === 'object') {
+      theme = pkg.theme
+  }
+  return theme
 }
 
 exports.cssLoaders = function(options) {
@@ -62,7 +82,7 @@ exports.cssLoaders = function(options) {
     }),
     postcss: generateLoaders(),
     // https://github.com/ant-design/ant-design/issues/7927#issuecomment-372513256 less 3.x add
-    less: generateLoaders('less', { javascriptEnabled: true }),
+    less: generateLoaders('less', { modifyVars: exports.getThemeConfig(), javascriptEnabled: true }),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
