@@ -1,6 +1,7 @@
 # react-base
 
-> A vue-cli React project
+> A vue-cli React project # 使用 vue-cli 驱动的 react 项目
+
 
 ## Build Setup
 
