@@ -11,6 +11,12 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "antd": "^3.7.1",
+    "babel-plugin-import": "^1.8.0",
+    "history": "^4.7.2",
+    "js-md5": "^0.7.3",
+    "moment": "^2.22.2",
+    "qs": "^6.5.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router": "^4.3.1",
