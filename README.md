@@ -2,6 +2,7 @@
 
 > A vue-cli React project # 使用 vue-cli 驱动的 react 项目
 
+**在 router 分支 有 使用 react + router + antd 的例子**
 
 ## Build Setup
 
