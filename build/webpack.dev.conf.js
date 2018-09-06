@@ -1,21 +1,25 @@
-'use strict'
-const utils = require('./utils')
 const webpack = require('webpack')
-const config = require('../config')
 const merge = require('webpack-merge')
 const path = require('path')
-const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+const baseWebpackConfig = require('./webpack.base.conf')
+const config = require('../config')
+const utils = require('./utils')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
+  mode: 'development',
+  // 开发环境下默认启用cache，在内存中对已经构建的部分进行缓存
+  // 避免其他模块修改，但是该模块未修改时候，重新构建，能够更快的进行增量构建
+  // 属于空间换时间的做法
+  cache: true,
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
+    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
@@ -24,7 +28,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devServer: {
     clientLogLevel: 'warning',
     historyApiFallback: {
-      rewrites: [{ from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') }]
+      rewrites: [{ from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') }],
     },
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
@@ -37,31 +41,36 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     proxy: config.dev.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
-      poll: config.dev.poll
-    }
+      poll: config.dev.poll,
+    },
+  },
+  optimization: {
+    noEmitOnErrors: true,
+    namedModules: true, // 取代插件中的 new webpack.NamedModulesPlugin()
+    namedChunks: true,
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env')
+      'process.env': require('../config/dev.env'),
     }),
+
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
-    new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      inject: true,
+      chunksSortMode: 'none',
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),
         to: config.dev.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
-  ]
+        ignore: ['.*'],
+      },
+    ]),
+  ],
 })
 
 module.exports = new Promise((resolve, reject) => {
@@ -79,9 +88,11 @@ module.exports = new Promise((resolve, reject) => {
       devWebpackConfig.plugins.push(
         new FriendlyErrorsPlugin({
           compilationSuccessInfo: {
-            messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`]
+            messages: [
+              `Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`,
+            ],
           },
-          onErrors: config.dev.notifyOnErrors ? utils.createNotifierCallback() : undefined
+          onErrors: config.dev.notifyOnErrors ? utils.createNotifierCallback() : undefined,
         })
       )
 

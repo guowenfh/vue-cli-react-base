@@ -4,9 +4,7 @@ module.exports = {
   root: true,
   parserOptions: {
     parser: 'babel-eslint',
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    }
+    ecmaFeatures: {},
   },
   env: {
     browser: true,
@@ -14,7 +12,7 @@ module.exports = {
     es6: true,
     mocha: true,
     jest: true,
-    jasmine: true
+    jasmine: true,
   },
   extends: ['airbnb'],
   plugins: ['compat'],
@@ -22,9 +20,9 @@ module.exports = {
   settings: {
     'import/resolver': {
       webpack: {
-        config: 'build/webpack.base.conf.js'
-      }
-    }
+        config: 'build/webpack.base.conf.js',
+      },
+    },
   },
   // add your custom rules here
   rules: {
@@ -46,8 +44,8 @@ module.exports = {
         arrow: 'parens-new-line',
         condition: 'parens-new-line',
         logical: 'parens-new-line',
-        prop: 'ignore'
-      }
+        prop: 'ignore',
+      },
     ],
     'no-else-return': [0],
     'no-restricted-syntax': [0],
@@ -70,17 +68,17 @@ module.exports = {
         objects: 'always-multiline',
         imports: 'always-multiline',
         exports: 'always-multiline',
-        functions: 'ignore'
-      }
+        functions: 'ignore',
+      },
     ],
     'object-curly-newline': [0],
     'function-paren-newline': [0],
     'no-restricted-globals': [0],
     'require-yield': [1],
-    'semi':[2, 'never'],
+    semi: [2, 'never'],
     'compat/compat': 'error',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0
-  }
-};
+    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
+  },
+}
