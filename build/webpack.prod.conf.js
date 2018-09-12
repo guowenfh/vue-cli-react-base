@@ -40,11 +40,23 @@ const webpackConfig = merge(baseWebpackConfig, {
       name: true,
       cacheGroups: {
         vendors: {
-          test: /[\\/]node_modules[\\/]/,
+          test(file) {
+            return (
+              file.resource
+              && /\.js$/.test(file.resource)
+              && file.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
+            )
+          },
           name: 'vendor',
           chunks: 'all',
           priority: -10,
-          reuseExistingChunk: false,
+          enforce: true,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 3,
+          priority: 10,
+          reuseExistingChunk: true,
         },
       },
     },

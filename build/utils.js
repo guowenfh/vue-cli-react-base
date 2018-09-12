@@ -29,15 +29,15 @@ exports.cssLoaders = function (options) {
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders(loader, loaderOptions) {
+  function generateLoaders(loader, loaderOptions = {}) {
     const loaders = options.usePostCSS
-      ? [cssLoader(loaderOptions), postcssLoader]
+      ? [cssLoader(loaderOptions.css ? loaderOptions.css : loaderOptions), postcssLoader]
       : [cssLoader(loaderOptions)]
 
     if (loader) {
       loaders.push({
         loader: `${loader}-loader`,
-        options: Object.assign({}, loaderOptions, {
+        options: Object.assign({}, loaderOptions.less ? loaderOptions.less : loaderOptions, {
           sourceMap: options.sourceMap,
         }),
       })
@@ -65,8 +65,19 @@ exports.cssLoaders = function (options) {
       localIdentName: '[name]--[local]--[hash:base64:5]',
     }),
     postcss: generateLoaders(),
-    // https://github.com/ant-design/ant-design/issues/7927#issuecomment-372513256 less 3.x add
-    less: generateLoaders('less', { javascriptEnabled: true }),
+    // modifyVars
+    less: generateLoaders('less', {
+      javascriptEnabled: true,
+    }),
+    'module\\.less': generateLoaders('less', {
+      css: {
+        sourceMap: options.sourceMap,
+        modules: true,
+        camelCase: true,
+        localIdentName: '[name]--[local]--[hash:base64:5]',
+      },
+      less: { javascriptEnabled: true },
+    }),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
@@ -86,6 +97,11 @@ exports.styleLoaders = function (options) {
         test: filePath => /\.css$/.test(filePath) && !/\.module\.css$/.test(filePath),
         use: loader,
       }
+    } else if (extension === 'less') {
+      obj = {
+        test: filePath => /\.less$/.test(filePath) && !/\.module\.less$/.test(filePath),
+        use: loader,
+      }
     } else {
       obj = {
         test: new RegExp(`\\.${extension}$`),
@@ -97,7 +113,6 @@ exports.styleLoaders = function (options) {
 
   return output
 }
-
 exports.createNotifierCallback = () => {
   const notifier = require('node-notifier')
 
