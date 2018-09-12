@@ -12,11 +12,7 @@ class App extends Component {
           <h1 className={styles.appTitle}>Welcome to React</h1>
         </header>
         <p className={styles.appIntro}>
-          <span>To get started, edit</span>
-          {' '}
-          <code>src/App.js</code>
-          {' '}
-          <span>and save to reload.</span>
+          <span>To get started, edit</span> <code>src/App.js</code> <span>and save to reload.</span>
         </p>
       </div>
     )

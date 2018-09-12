@@ -2,83 +2,68 @@
 
 module.exports = {
   root: true,
+  parser: "babel-eslint",
   parserOptions: {
-    parser: 'babel-eslint',
-    ecmaFeatures: {},
+    ecmaVersion: 8,
+    sourceType: "module",
+    //想使用的额外的语言特性:
+    ecmaFeatures: {
+      parser: "babel-eslint",
+      // 允许在全局作用域下使用 return 语句
+      globalReturn: true,
+      // impliedStric 严格模式
+      impliedStrict: true,
+      // 启用 JSX
+      jsx: true,
+      experimentalObjectRestSpread: true,
+      modules: true
+    }
   },
+  globals: {},
   env: {
     browser: true,
     node: true,
-    es6: true,
-    mocha: true,
-    jest: true,
-    jasmine: true,
+    commonjs: true,
+    amd: true,
+    es6: true
   },
-  extends: ['airbnb'],
-  plugins: ['compat'],
-  // check if imports actually resolve
-  settings: {
-    'import/resolver': {
-      webpack: {
-        config: 'build/webpack.base.conf.js',
-      },
-    },
-  },
+  // required to lint *.js files
+  plugins: ["html", "prettier"],
+  //  ,
+  extends: [
+    "standard",
+    "standard-jsx",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react",
+    "prettier/standard"
+    // "plugin:prettier/recommended"
+  ],
   // add your custom rules here
   rules: {
-    'generator-star-spacing': [0],
-    'consistent-return': [0],
-    'react/forbid-prop-types': [0],
-    'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
-    'global-require': [1],
-    'import/prefer-default-export': [0],
-    'react/jsx-no-bind': [0],
-    'react/prop-types': [0],
-    'react/prefer-stateless-function': [0],
-    'react/jsx-wrap-multilines': [
-      'error',
+    semi: [2, "never"],
+    quotes: [2, "single", "avoid-escape"],
+    "no-debugger": process.env.NODE_ENV === "production" ? 2 : 0,
+    "no-console": process.env.NODE_ENV === "production" ? 2 : 0,
+    camelcase: [0],
+    "react/prop-types": [0],
+    "react/react-in-jsx-scope": [0],
+    "react/no-string-refs": [0],
+    "react/display-name": [0],
+    "prettier/prettier": [
+      "error",
       {
-        declaration: 'parens-new-line',
-        assignment: 'parens-new-line',
-        return: 'parens-new-line',
-        arrow: 'parens-new-line',
-        condition: 'parens-new-line',
-        logical: 'parens-new-line',
-        prop: 'ignore',
-      },
-    ],
-    'no-else-return': [0],
-    'no-restricted-syntax': [0],
-    'import/no-extraneous-dependencies': [0],
-    'no-use-before-define': [0],
-    'jsx-a11y/no-static-element-interactions': [0],
-    'jsx-a11y/no-noninteractive-element-interactions': [0],
-    'jsx-a11y/click-events-have-key-events': [0],
-    'jsx-a11y/anchor-is-valid': [0],
-    'no-nested-ternary': [0],
-    'arrow-body-style': [0],
-    'import/extensions': [0],
-    'no-bitwise': [0],
-    'no-cond-assign': [0],
-    'import/no-unresolved': [0],
-    'comma-dangle': [
-      'error',
-      {
-        arrays: 'always-multiline',
-        objects: 'always-multiline',
-        imports: 'always-multiline',
-        exports: 'always-multiline',
-        functions: 'ignore',
-      },
-    ],
-    'object-curly-newline': [0],
-    'function-paren-newline': [0],
-    'no-restricted-globals': [0],
-    'require-yield': [1],
-    semi: [2, 'never'],
-    'compat/compat': 'error',
-    // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
-  },
-}
+        singleQuote: true,
+        printWidth: 120,
+        tabWidth: 2,
+        semi: false,
+        trailingComma: "none",
+        arrowParens: "avoid",
+        bracketSpacing: true,
+        jsxBracketSameLine: true
+        // insertPragma: true,
+        // requirePragma: false
+      }
+    ]
+  }
+};
