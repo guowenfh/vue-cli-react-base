@@ -22,7 +22,12 @@ class Admin extends Component {
       <Layout>
         <Layout className={style.contents}>
           <Sider width={170} style={{ background: '#fff' }}>
-            <Menu onClick={this.onMenuClick} mode="inline" selectedKeys={[location.pathname]} style={{ height: '100%', borderRight: 0 }}>
+            <Menu
+              onClick={this.onMenuClick}
+              mode="inline"
+              selectedKeys={[location.pathname]}
+              style={{ height: '100%', borderRight: 0 }}
+            >
               {route.routes.map(item => {
                 if (typeof item.isMenu == 'boolean' && item.isMenu == false) {
                   return null
@@ -37,7 +42,8 @@ class Admin extends Component {
                           <Icon type={item.icon} />
                           {item.name}
                         </span>
-                      }>
+                      }
+                    >
                       {item.children.map(child => {
                         return (
                           <Menu.Item key={child.path} style={{ height: 40, display: 'block' }}>
@@ -51,8 +57,9 @@ class Admin extends Component {
                                   wordWrap: 'break-word',
                                   whiteSpace: 'normal',
                                   lineHeight: '20px',
-                                  marginTop: 10
-                                }}>
+                                  marginTop: 10,
+                                }}
+                              >
                                 {child.name}
                               </div>
                             </span>
@@ -74,8 +81,9 @@ class Admin extends Component {
                           wordWrap: 'break-word',
                           whiteSpace: 'normal',
                           lineHeight: '20px',
-                          marginTop: 10
-                        }}>
+                          marginTop: 10,
+                        }}
+                      >
                         {item.name}
                       </div>
                     </span>
@@ -85,7 +93,9 @@ class Admin extends Component {
             </Menu>
           </Sider>
           <Layout style={{ padding: 0, borderLeft: 'solid 1px #e8e8e8' }}>
-            <Content style={{ background: '#fff', padding: 12, margin: 0, minHeight: 280 }}>{renderRoutes(route.routes)}</Content>
+            <Content style={{ background: '#fff', padding: 12, margin: 0, minHeight: 280 }}>
+              {renderRoutes(route.routes)}
+            </Content>
           </Layout>
         </Layout>
       </Layout>

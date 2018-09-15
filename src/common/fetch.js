@@ -1,7 +1,6 @@
 import { message } from 'antd'
 import qs from 'query-string'
 
-
 const defaultOptions = {
   credentials: 'same-origin',
   headers: {

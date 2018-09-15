@@ -13,14 +13,14 @@ export function getFontContent(fontMap = {}) {
  * @param {any} [fontMap={}]
  * @returns
  */
-export function userLogin(fontMap = {}) {
-  return Promise.resolve({success:true})
+export function userLogin() {
+  return Promise.resolve({ success: true })
 }
 /**
  * 获取字体生成的返回。
  * @param {any} [fontMap={}]
  * @returns
  */
-export function getUserInfo(fontMap = {}) {
+export function getUserInfo() {
   return Promise.resolve({})
 }
