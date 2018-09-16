@@ -1,7 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -20,14 +19,14 @@ const webpackConfig = merge(baseWebpackConfig, {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
       extract: true,
-      usePostCSS: true,
-    }),
+      usePostCSS: true
+    })
   },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js'),
+    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
   },
   optimization: {
     minimize: true, // 是否进行代码压缩
@@ -42,42 +41,42 @@ const webpackConfig = merge(baseWebpackConfig, {
         vendors: {
           test(file) {
             return (
-              file.resource
-              && /\.js$/.test(file.resource)
-              && file.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
+              file.resource &&
+              /\.js$/.test(file.resource) &&
+              file.resource.indexOf(path.join(__dirname, '../node_modules')) === 0
             )
           },
           name: 'vendor',
           chunks: 'all',
           priority: -10,
           enforce: true,
-          reuseExistingChunk: true,
+          reuseExistingChunk: true
         },
         default: {
           minChunks: 3,
           priority: 10,
-          reuseExistingChunk: true,
-        },
-      },
+          reuseExistingChunk: true
+        }
+      }
     },
     runtimeChunk: {
-      name: 'manifest',
-    },
+      name: 'manifest'
+    }
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env,
+      'process.env': env
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
-          warnings: false,
-        },
+          warnings: false
+        }
       },
       cache: true,
       sourceMap: config.build.productionSourceMap,
-      parallel: true,
+      parallel: true
     }),
     // extract css into its own file
     new MiniCssExtractPlugin({
@@ -86,14 +85,14 @@ const webpackConfig = merge(baseWebpackConfig, {
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
       // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
       // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
-      allChunks: true,
+      allChunks: true
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
       cssProcessorOptions: config.build.productionSourceMap
         ? { parser: safeParser, map: { inline: false } }
-        : { parser: safeParser },
+        : { parser: safeParser }
     }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -105,12 +104,12 @@ const webpackConfig = merge(baseWebpackConfig, {
       minify: {
         removeComments: true,
         collapseWhitespace: true,
-        removeAttributeQuotes: true,
+        removeAttributeQuotes: true
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'none',
+      chunksSortMode: 'none'
     }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
@@ -121,10 +120,11 @@ const webpackConfig = merge(baseWebpackConfig, {
       {
         from: path.resolve(__dirname, '../static'),
         to: config.build.assetsSubDirectory,
-        ignore: ['.*'],
-      },
+        ignore: ['.*']
+      }
     ]),
-  ],
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /zh-cn/)
+  ]
 })
 
 if (config.build.productionGzip) {
@@ -136,7 +136,7 @@ if (config.build.productionGzip) {
       algorithm: 'gzip',
       test: new RegExp(`\\.(${config.build.productionGzipExtensions.join('|')})$`),
       threshold: 10240,
-      minRatio: 0.8,
+      minRatio: 0.8
     })
   )
 }
