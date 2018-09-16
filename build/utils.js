@@ -20,7 +20,6 @@ exports.getThemeConfig = function() {
     // relative path
     if (cfgPath.charAt(0) === '.') {
       cfgPath = path.resolve(__dirname, '..', cfgPath)
-      console.error(cfgPath)
     }
     const config = require(cfgPath)
     theme = config
@@ -28,6 +27,16 @@ exports.getThemeConfig = function() {
     theme = pkg.theme
   }
   return theme
+}
+
+/**
+ * 获取 dll 文件的配置
+ * 并且可以进行多页面的单独配置。admin:['src/module/admin/admin.js']
+ */
+exports.getDllModuleEntrys = function() {
+  return {
+    vendor: ['react', 'react-dom', 'react-router-config', 'react-router-dom']
+  }
 }
 
 exports.cssLoaders = function(options) {

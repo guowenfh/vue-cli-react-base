@@ -4,6 +4,8 @@ const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const AutoDllPlugin = require('autodll-webpack-plugin')
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const portfinder = require('portfinder')
 const baseWebpackConfig = require('./webpack.base.conf')
 const config = require('../config')
@@ -61,6 +63,18 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true,
       chunksSortMode: 'none'
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      // sync: 'important',
+      defaultAttribute: 'defer'
+    }),
+    new AutoDllPlugin({
+      debug: true,
+      inject: true,
+      filename: 'dll_[name].dll.js',
+      path: './static/js',
+      context: path.join(__dirname, '..'),
+      entry: utils.getDllModuleEntrys()
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
