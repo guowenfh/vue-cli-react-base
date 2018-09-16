@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { renderRoutes } from 'react-router-config'
-import { Layout, Menu, Icon, Badge } from 'antd'
-const { SubMenu } = Menu
-const { Header, Content, Sider } = Layout
+import { Layout, Menu, Icon } from 'antd'
 import style from './style.module.css'
+const { SubMenu } = Menu
+const { Content, Sider } = Layout
 class Admin extends Component {
   state = {}
   componentDidMount() {}
   onMenuClick = e => {
     const { location, history } = this.props
-    if (location.pathname == e.key) {
+    if (location.pathname === e.key) {
       return
     }
     history.push(e.key)
@@ -26,10 +26,9 @@ class Admin extends Component {
               onClick={this.onMenuClick}
               mode="inline"
               selectedKeys={[location.pathname]}
-              style={{ height: '100%', borderRight: 0 }}
-            >
+              style={{ height: '100%', borderRight: 0 }}>
               {route.routes.map(item => {
-                if (typeof item.isMenu == 'boolean' && item.isMenu == false) {
+                if (typeof item.isMenu === 'boolean' && item.isMenu === false) {
                   return null
                 }
                 //  看这个有没有子类  有child就显示
@@ -42,8 +41,7 @@ class Admin extends Component {
                           <Icon type={item.icon} />
                           {item.name}
                         </span>
-                      }
-                    >
+                      }>
                       {item.children.map(child => {
                         return (
                           <Menu.Item key={child.path} style={{ height: 40, display: 'block' }}>
@@ -57,9 +55,8 @@ class Admin extends Component {
                                   wordWrap: 'break-word',
                                   whiteSpace: 'normal',
                                   lineHeight: '20px',
-                                  marginTop: 10,
-                                }}
-                              >
+                                  marginTop: 10
+                                }}>
                                 {child.name}
                               </div>
                             </span>
@@ -81,9 +78,8 @@ class Admin extends Component {
                           wordWrap: 'break-word',
                           whiteSpace: 'normal',
                           lineHeight: '20px',
-                          marginTop: 10,
-                        }}
-                      >
+                          marginTop: 10
+                        }}>
                         {item.name}
                       </div>
                     </span>

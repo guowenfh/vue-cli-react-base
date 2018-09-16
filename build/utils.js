@@ -1,18 +1,17 @@
 const path = require('path')
 const fs = require('fs')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const config = require('../config')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const packageConfig = require('../package.json')
 
-exports.assetsPath = function (_path) {
-  const assetsSubDirectory = process.env.NODE_ENV === 'production'
-    ? config.build.assetsSubDirectory
-    : config.dev.assetsSubDirectory
+exports.assetsPath = function(_path) {
+  const assetsSubDirectory =
+    process.env.NODE_ENV === 'production' ? config.build.assetsSubDirectory : config.dev.assetsSubDirectory
 
   return path.posix.join(assetsSubDirectory, _path)
 }
 
-exports.getThemeConfig = function () {
+exports.getThemeConfig = function() {
   const pkgPath = path.join(__dirname, '../package.json')
   const pkg = fs.existsSync(pkgPath) ? require(pkgPath) : {}
   let theme = {}
@@ -21,7 +20,6 @@ exports.getThemeConfig = function () {
     // relative path
     if (cfgPath.charAt(0) === '.') {
       cfgPath = path.resolve(__dirname, '..', cfgPath)
-      console.error(cfgPath)
     }
     const config = require(cfgPath)
     theme = config
@@ -31,45 +29,52 @@ exports.getThemeConfig = function () {
   return theme
 }
 
-exports.cssLoaders = function (options) {
+/**
+ * 获取 dll 文件的配置
+ * 并且可以进行多页面的单独配置。admin:['src/module/admin/admin.js']
+ */
+exports.getDllModuleEntrys = function() {
+  return {
+    vendor: ['react', 'react-dom', 'react-router-config', 'react-router-dom']
+  }
+}
+
+exports.cssLoaders = function(options) {
   options = options || {}
 
   const cssLoader = (loaderOptions = {}) => ({
     loader: 'css-loader',
     options: Object.assign({}, loaderOptions, {
-      sourceMap: options.sourceMap,
-    }),
+      sourceMap: options.sourceMap
+    })
   })
 
   const postcssLoader = {
     loader: 'postcss-loader',
     options: {
-      sourceMap: options.sourceMap,
-    },
+      sourceMap: options.sourceMap
+    }
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders(loader, loaderOptions) {
+  function generateLoaders(loader, loaderOptions = {}) {
     const loaders = options.usePostCSS
-      ? [cssLoader(loaderOptions), postcssLoader]
+      ? [cssLoader(loaderOptions.css ? loaderOptions.css : loaderOptions), postcssLoader]
       : [cssLoader(loaderOptions)]
 
     if (loader) {
       loaders.push({
-        loader: `${loader}-loader`,
-        options: Object.assign({}, loaderOptions, {
-          sourceMap: options.sourceMap,
-        }),
+        loader: loader + '-loader',
+        options: Object.assign({}, loaderOptions.less ? loaderOptions.less : loaderOptions, {
+          sourceMap: options.sourceMap
+        })
       })
     }
 
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {
-      return ExtractTextPlugin.extract({
-        use: loaders,
-        fallback: 'style-loader',
-      })
+      return [MiniCssExtractPlugin.loader].concat(loaders)
     } else {
       return ['style-loader'].concat(loaders)
     }
@@ -81,45 +86,55 @@ exports.cssLoaders = function (options) {
       sourceMap: options.sourceMap,
       modules: true,
       camelCase: true,
-      localIdentName: '[name]--[local]--[hash:base64:5]',
+      localIdentName: '[name]--[local]--[hash:base64:5]'
     }),
     postcss: generateLoaders(),
-    // https://github.com/ant-design/ant-design/issues/7927#issuecomment-372513256 less 3.x add
     less: generateLoaders('less', {
       modifyVars: exports.getThemeConfig(),
-      javascriptEnabled: true,
+      javascriptEnabled: true
+    }),
+    'module\\.less': generateLoaders('less', {
+      css: {
+        sourceMap: options.sourceMap,
+        modules: true,
+        camelCase: true,
+        localIdentName: '[name]--[local]--[hash:base64:5]'
+      },
+      less: { modifyVars: exports.getThemeConfig(), javascriptEnabled: true }
     }),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
-    styl: generateLoaders('stylus'),
+    styl: generateLoaders('stylus')
   }
 }
 
-exports.styleLoaders = function (options) {
+exports.styleLoaders = function(options) {
   const output = []
   const loaders = exports.cssLoaders(options)
-
   for (const extension in loaders) {
     const loader = loaders[extension]
     let obj = {}
     if (extension === 'css') {
       obj = {
         test: filePath => /\.css$/.test(filePath) && !/\.module\.css$/.test(filePath),
-        use: loader,
+        use: loader
+      }
+    } else if (extension === 'less') {
+      obj = {
+        test: filePath => /\.less$/.test(filePath) && !/\.module\.less$/.test(filePath),
+        use: loader
       }
     } else {
       obj = {
-        test: new RegExp(`\\.${extension}$`),
-        use: loader,
+        test: new RegExp('\\.' + extension + '$'),
+        use: loader
       }
     }
     output.push(obj)
   }
-
   return output
 }
-
 exports.createNotifierCallback = () => {
   const notifier = require('node-notifier')
 
@@ -131,9 +146,9 @@ exports.createNotifierCallback = () => {
 
     notifier.notify({
       title: packageConfig.name,
-      message: `${severity}: ${error.name}`,
+      message: severity + ': ' + error.name,
       subtitle: filename || '',
-      icon: path.join(__dirname, 'logo.png'),
+      icon: path.join(__dirname, 'logo.png')
     })
   }
 }

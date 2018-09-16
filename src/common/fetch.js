@@ -1,19 +1,19 @@
-import { message } from 'antd'
-import qs from 'query-string'
+// import { message } from 'antd'
+import qs from 'qs'
 
 const defaultOptions = {
   credentials: 'same-origin',
   headers: {
     // 'Accept': 'application/json, application/javascript',
     // 'Content-Type': 'application/x-www-form-urlencoded',
-    'Content-Type': 'application/json',
-  },
+    'Content-Type': 'application/json'
+  }
 }
-const getFullUrl = (url) => {
+const getFullUrl = url => {
   return url
 }
-const commonRes = (p) => {
-  return p.then((res) => {
+const commonRes = p => {
+  return p.then(res => {
     return res.json()
   })
 }
@@ -35,7 +35,7 @@ export function get(url, data = {}) {
     }
   }
   const option = {
-    method: 'GET',
+    method: 'GET'
   }
   return commonRes(fetch(getFullUrl(url), option))
 }
@@ -51,7 +51,7 @@ export function get(url, data = {}) {
 export function post(url, data = {}) {
   const option = Object.assign({}, defaultOptions, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify(data)
   })
   return commonRes(fetch(getFullUrl(url), option))
 }

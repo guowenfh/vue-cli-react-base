@@ -12,7 +12,7 @@ const routes = [
       {
         path: '/',
         exact: true,
-        component: Login,
+        component: Login
       },
       {
         path: '/index',
@@ -21,21 +21,21 @@ const routes = [
           {
             name: '模特图',
             path: '/index/PictureModel/',
-            component: PictureModel,
+            component: PictureModel
           },
           {
             name: '细节图',
             path: '/index/PictureDetails/',
-            component: PictureDetails,
-          },
-        ],
+            component: PictureDetails
+          }
+        ]
       },
       {
         path: '*',
-        component: PageNotFound,
-      },
-    ],
-  },
+        component: PageNotFound
+      }
+    ]
+  }
 ]
 
 export default routes

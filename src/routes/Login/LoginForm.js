@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd'
+import { Form, Icon, Input, Button } from 'antd'
 import style from './style.module.css'
-import md5 from 'js-md5'
-import { userLogin, getUserInfo } from 'common/api'
+import { userLogin } from 'common/api'
 const FormItem = Form.Item
 class NormalLoginForm extends Component {
   state = {
@@ -16,7 +15,7 @@ class NormalLoginForm extends Component {
       }
       const params = {
         userName: values.userName,
-        password: md5(values.password)
+        password: values.password
       }
       this.setState({ loading: true })
       userLogin(params)
@@ -24,13 +23,14 @@ class NormalLoginForm extends Component {
           if (data.success) {
             return data
           }
-          return Promise.reject('登录失败')
+          return Promise.reject(new Error('登录失败'))
         })
         .then(() => {
           this.setState({ loading: false })
           this.props.history.push('/index/PictureDetails')
         })
         .catch(err => {
+          console.error(err)
           this.setState({ loading: false })
         })
     })
@@ -48,7 +48,13 @@ class NormalLoginForm extends Component {
         <FormItem>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: '请输入密码!' }]
-          })(<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />)}
+          })(
+            <Input
+              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type="password"
+              placeholder="密码"
+            />
+          )}
         </FormItem>
         <FormItem>
           <Button type="primary" htmlType="submit" className={style['login-form-button']} disabled={loading}>
