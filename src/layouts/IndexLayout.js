@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { renderRoutes } from 'react-router-config'
-import { Layout, Menu, Icon, Badge } from 'antd'
+import { Layout, Menu, Icon } from 'antd'
 import style from './style.module.css'
 const { SubMenu } = Menu
-const { Header, Content, Sider } = Layout
+const { Content, Sider } = Layout
 class Admin extends Component {
   state = {}
   componentDidMount() {}
   onMenuClick = e => {
     const { location, history } = this.props
-    if (location.pathname == e.key) {
+    if (location.pathname === e.key) {
       return
     }
     history.push(e.key)
@@ -28,7 +28,7 @@ class Admin extends Component {
               selectedKeys={[location.pathname]}
               style={{ height: '100%', borderRight: 0 }}>
               {route.routes.map(item => {
-                if (typeof item.isMenu === 'boolean' && item.isMenu == false) {
+                if (typeof item.isMenu === 'boolean' && item.isMenu === false) {
                   return null
                 }
                 //  看这个有没有子类  有child就显示

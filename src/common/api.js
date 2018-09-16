@@ -1,4 +1,4 @@
-import { get, post } from './fetch'
+import { post } from './fetch'
 
 /**
  * 获取字体生成的返回。
