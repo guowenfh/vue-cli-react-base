@@ -74,7 +74,7 @@ exports.cssLoaders = function (options) {
         sourceMap: options.sourceMap,
         modules: true,
         camelCase: true,
-        localIdentName: '[name]--[local]--[hash:base64:5]',
+        localIdentName: '[name]__[local]--[hash:base64:5]',
       },
       less: { javascriptEnabled: true },
     }),
