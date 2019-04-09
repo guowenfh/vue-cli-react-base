@@ -2,6 +2,7 @@
 
 > 使用 vue-cli@2 驱动的 react 项目
 > 使用 webpack@4 + babel@7 + (css/less module) + prettier 来构建
+> 推荐使用 npm i -S classnames 库来更好的使用 css module
 
 内置了 `husky` 与 `eslint-config-standard` 与 `prettier-eslint` 来运行 `git commit` 时代码的自动格式化。
 
