@@ -3,11 +3,6 @@
 > 使用 vue-cli@2 驱动的 react 项目
 > 使用 webpack@4 + babel@7 + (css/less module) + prettier 来构建
 
-**在 router 分支 有 使用 react + react-router + antd 的例子**
-
-状态管理工具方面没有内置，推荐使用 rematch
-
-配置了 AutoDllPlugin 进行模块提取，使用 react-router-config 来达到和 vue-router 类似的体验。
 
 ## Build Setup
 
