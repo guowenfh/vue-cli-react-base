@@ -1,0 +1,24 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 0 20px;
+    background-color: #495060;
+}
+.logo {
+  height: 30px;
+  width: 100px;
+}
+.nick {
+  float: right;
+  color: #fff;
+}
+.contents {
+    padding: 10px;
+    min-height: 200px;
+    width: 100%;
+    margin: 15px 0;
+    background: #fff;
+    border-radius: 4px;
+}

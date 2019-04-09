@@ -1,23 +1,18 @@
 import React, { Component } from 'react'
-import { hot } from 'react-hot-loader'
-import logo from './logo.png'
-import styles from './App.module.css'
+import { hot } from 'react-hot-loader/root'
+import { renderRoutes } from 'react-router-config'
+import { HashRouter as Router } from 'react-router-dom'
+import routes from './common/routes.js'
 
 class App extends Component {
   render() {
     return (
-      <div className={styles.App}>
-        <header className={styles.appHeader}>
-          <img src={logo} className={styles.appLogo} alt="logo" />
-          <h1 className={styles.appTitle}>Welcome to React</h1>
-        </header>
-        <p className={styles.appIntro}>
-          <span>To get started, edit</span> <code>src/App.js</code> <span>and save to reload.</span>
-        </p>
-      </div>
+      <Router>
+        {/* kick it all off with the App route */}
+        {renderRoutes(routes)}
+      </Router>
     )
   }
 }
 
-export default hot(module)(App)
-// export default App
+export default (process.env.NODE_ENV === 'development' ? hot(App) : App)
