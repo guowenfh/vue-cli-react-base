@@ -15,6 +15,12 @@
 
 结合 `react-loadable` 与 `import()` 实现了路由的按需加载
 
+`package.json` 使用了 `~` 版本，来尽量保证安装时依赖升级导致报错问题
+
+## branch
+
+**在 `base` 分支有最小的实现，只实现了与 `create-react-app` 基础一样的功能**
+
 ## Build Setup
 
 ```bash
