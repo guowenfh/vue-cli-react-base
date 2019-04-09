@@ -4,13 +4,8 @@ export default {
   },
   reducers: {
     setQuery(state, payload) {
-      return {
-        ...state,
-        query: {
-          ...state.query,
-          ...payload
-        }
-      }
+      state.query = payload
+      return state
     }
   },
   effects: {

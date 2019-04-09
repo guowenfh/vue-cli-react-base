@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.less'
 import { LocaleProvider, notification } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
-import Router from './router'
+import App from './App'
 
 notification.config({
   duration: 2,
@@ -12,7 +12,7 @@ notification.config({
 
 ReactDOM.render(
   <LocaleProvider locale={zh_CN}>
-    <Router />
+    <App />
   </LocaleProvider>,
   document.getElementById('app')
 )

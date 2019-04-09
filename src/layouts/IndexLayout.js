@@ -38,7 +38,7 @@ class Admin extends Component {
                       key={item.path}
                       title={
                         <span>
-                          <Icon type={item.icon} />
+                          {item.icon ? <Icon type={item.icon} /> : null}
                           {item.name}
                         </span>
                       }>
@@ -46,7 +46,7 @@ class Admin extends Component {
                         return (
                           <Menu.Item key={child.path} style={{ height: 40, display: 'block' }}>
                             <span>
-                              <Icon type={child.icon} style={{ float: 'left', marginTop: 13 }} />
+                              {item.icon ? <Icon type={child.icon} style={{ float: 'left', marginTop: 13 }} /> : null}
                               <div
                                 style={{
                                   height: 40,
@@ -69,7 +69,7 @@ class Admin extends Component {
                 return (
                   <Menu.Item key={item.path} style={{ height: 40, display: 'block' }}>
                     <span style={{ height: 40, display: 'block' }}>
-                      <Icon type={item.icon} style={{ float: 'left', marginTop: 13 }} />
+                      {item.icon ? <Icon type={item.icon} style={{ float: 'left', marginTop: 13 }} /> : null}
                       <div
                         style={{
                           height: 40,

@@ -5,8 +5,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const AutoDllPlugin = require('autodll-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const safeParser = require('postcss-safe-parser')
 const baseWebpackConfig = require('./webpack.base.conf')
@@ -14,26 +14,35 @@ const config = require('../config')
 const utils = require('./utils')
 const env = require('../config/prod.env')
 
-const uglifyJsConfig = {
-  uglifyOptions: {
-    // 最紧凑的输出
-    beautify: false,
-    // 删除所有的注释
-    comments: false,
-    compress: {
-      // 在UglifyJs删除没有用到的代码时不输出警告
-      warnings: false,
-      // 删除所有的 `console` 语句
-      drop_console: true,
-      // 内嵌定义了但是只用到一次的变量
-      collapse_vars: true,
-      // 提取出出现多次但是没有定义成变量去引用的静态值
-      reduce_vars: true
+const getUglify = () => {
+  return new TerserPlugin({
+    terserOptions: {
+      parse: {
+        ecma: 8
+      },
+      compress: {
+        ecma: 5,
+        // 删除所有的 `console` 语句
+        drop_console: true,
+        // 在UglifyJs删除没有用到的代码时不输出警告
+        warnings: false,
+        comparisons: false,
+        inline: 2
+      },
+      mangle: {
+        safari10: true
+      },
+      output: {
+        ecma: 5,
+        comments: false,
+        ascii_only: true
+      }
     },
-    cache: true
-  },
-  sourceMap: config.build.productionSourceMap,
-  parallel: 4 // true
+    parallel: true,
+    // Enable file caching
+    cache: true,
+    sourceMap: config.build.productionSourceMap
+  })
 }
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -52,13 +61,24 @@ const webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
   },
   optimization: {
-    minimize: true, // 是否进行代码压缩
+    minimizer: [
+      getUglify(),
+      new OptimizeCSSPlugin({
+        cssProcessorOptions: config.build.productionSourceMap
+          ? { safe: true, map: { inline: false } }
+          : { safe: true }
+      })
+      // Compress extracted CSS. We are using this plugin so that possible
+      // duplicated CSS from different components can be deduped.
+    ], // 是否进行代码压缩
     splitChunks: {
-      chunks: 'async',
-      // minSize: 30000, // 模块大于30k会被抽离到公共模块
-      // minChunks: 3, // 模块出现1次就会被抽离到公共模块
-      // maxAsyncRequests: 5, // 异步模块，一次最多只能被加载5个
-      // maxInitialRequests: 3, // 入口模块最多只能加载3个
+      chunks: 'all',
+      maxSize: 0, //没有限制
+      minSize: 30000, // 模块大于30k会被抽离到公共模块
+      minChunks: 3, // 共享最少的chunk数，使用次数超过这个值才会被提取
+      maxAsyncRequests: 5, //最多的异步chunk数
+      maxInitialRequests: 5, // 最多的同步chunks数
+      automaticNameDelimiter: '~', // 多页面共用chunk命名分隔符
       name: true,
       cacheGroups: {
         vendors: {
@@ -73,11 +93,6 @@ const webpackConfig = merge(baseWebpackConfig, {
           chunks: 'all',
           priority: -10,
           enforce: true,
-          reuseExistingChunk: true
-        },
-        default: {
-          minChunks: 3,
-          priority: 10,
           reuseExistingChunk: true
         }
       }
@@ -118,9 +133,14 @@ const webpackConfig = merge(baseWebpackConfig, {
       minify: {
         removeComments: true,
         collapseWhitespace: true,
-        removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: (c1, c2) => {
@@ -134,15 +154,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     new ScriptExtHtmlWebpackPlugin({
       // sync: 'important',
       defaultAttribute: 'defer'
-    }),
-    new AutoDllPlugin({
-      // debug: true,
-      inject: true,
-      filename: 'dll_[name]_[hash:5].dll.js',
-      path: './static/js',
-      context: path.join(__dirname, '..'),
-      entry: utils.getDllModuleEntrys(),
-      plugins: [new UglifyJsPlugin(uglifyJsConfig)]
     }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),

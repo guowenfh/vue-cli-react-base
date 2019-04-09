@@ -3,11 +3,17 @@
 > 使用 vue-cli@2 驱动的 react 项目
 > 使用 webpack@4 + babel@7 + (css/less module) + prettier 来构建
 
-**在 router 分支 有 使用 react + react-router + antd 的例子**
+内置了 `husky` 与 `eslint-config-standard` 与 `prettier-eslint` 来运行 `git commit` 时代码的自动格式化。
 
-状态管理工具方面没有内置，推荐使用 rematch
+状态管理工具方面使用 `@rematch` , 并且内置了插件 `@rematch/immer` 以及 `@rematch/loading`
 
-配置了 AutoDllPlugin 进行模块提取，使用 react-router-config 来达到和 vue-router 类似的体验。
+具体使用方式参考: [Rematch实践指南](https://rematch.gitbook.io/handbook/cha-jian)
+
+内置了组件库 `antd` 结合 `babel-plugin-import` 做了组件（`lodash`也可以）的按需引入 (直接修改 `src/theme.js` 可以修改主题色)
+
+使用 `react-router-config` 来达到和 `vue-router` 类似的体验。
+
+结合 `react-loadable` 与 `import()` 实现了路由的按需加载
 
 ## Build Setup
 

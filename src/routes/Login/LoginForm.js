@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button } from 'antd'
 import style from './style.module.css'
-import { userLogin } from 'common/api'
+import { userLogin } from '@/common/api'
 const FormItem = Form.Item
 class NormalLoginForm extends Component {
   state = {

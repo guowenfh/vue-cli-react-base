@@ -29,22 +29,19 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
+    modules: [
+      resolve('src'),
+      resolve('node_modules')
+    ],
     alias: {
-      src: resolve('src'),
-      common: resolve('src/common'),
-      components: resolve('src/components'),
-      routes: resolve('src/routes'),
-      utils: resolve('src/utils'),
-      layouts: resolve('src/layouts'),
-      static: resolve('static')
+      '@': resolve('src'),
+      'react-dom': '@hot-loader/react-dom',
     }
   },
   externals: {
-    // 'react': 'React',
-    // 'react-dom': 'ReactDOM',
-    '../moment': 'moment'
   },
   module: {
+    noParse: /node_modules\/(moment|chart\.js)/,
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {

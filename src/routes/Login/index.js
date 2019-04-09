@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col } from 'antd'
-import main from 'static/main.png'
+import main from '../../../static/main.png'
 import style from './style.module.css'
 import LoginForm from './LoginForm'
 

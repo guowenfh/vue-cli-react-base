@@ -29,16 +29,6 @@ exports.getThemeConfig = function() {
   return theme
 }
 
-/**
- * 获取 dll 文件的配置
- * 并且可以进行多页面的单独配置。admin:['src/module/admin/admin.js']
- */
-exports.getDllModuleEntrys = function() {
-  return {
-    vendor: ['react', 'react-dom', 'react-router-config', 'react-router-dom']
-  }
-}
-
 exports.cssLoaders = function(options) {
   options = options || {}
 
@@ -86,7 +76,7 @@ exports.cssLoaders = function(options) {
       sourceMap: options.sourceMap,
       modules: true,
       camelCase: true,
-      localIdentName: '[name]--[local]--[hash:base64:5]'
+      localIdentName: process.env.NODE_ENV === 'production' ? '[local]__[hash:base64:5]': '[name]--[local]--[hash:base64:5]'
     }),
     postcss: generateLoaders(),
     less: generateLoaders('less', {
@@ -98,7 +88,7 @@ exports.cssLoaders = function(options) {
         sourceMap: options.sourceMap,
         modules: true,
         camelCase: true,
-        localIdentName: '[name]--[local]--[hash:base64:5]'
+        localIdentName: process.env.NODE_ENV === 'production' ? '[local]__[hash:base64:5]': '[name]--[local]--[hash:base64:5]'
       },
       less: { modifyVars: exports.getThemeConfig(), javascriptEnabled: true }
     }),

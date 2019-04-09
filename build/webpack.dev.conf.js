@@ -4,7 +4,6 @@ const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const AutoDllPlugin = require('autodll-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const portfinder = require('portfinder')
 const baseWebpackConfig = require('./webpack.base.conf')
@@ -15,6 +14,14 @@ const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
+  entry: {
+    app: [
+      './src/index.js',
+      'react-hot-loader/patch',
+      // `webpack-dev-server/client/index.js?http://${HOST}:${PORT}/`,
+      'webpack/hot/dev-server',
+    ]
+  },
   mode: 'development',
   // 开发环境下默认启用cache，在内存中对已经构建的部分进行缓存
   // 避免其他模块修改，但是该模块未修改时候，重新构建，能够更快的进行增量构建
@@ -67,14 +74,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new ScriptExtHtmlWebpackPlugin({
       // sync: 'important',
       defaultAttribute: 'defer'
-    }),
-    new AutoDllPlugin({
-      debug: true,
-      inject: true,
-      filename: 'dll_[name].dll.js',
-      path: './static/js',
-      context: path.join(__dirname, '..'),
-      entry: utils.getDllModuleEntrys()
     }),
     // copy custom static assets
     new CopyWebpackPlugin([

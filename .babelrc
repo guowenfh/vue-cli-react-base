@@ -30,10 +30,21 @@
     [
       "import",
       {
-        "libraryName": "antd",
-        "libraryDirectory": "es",
-        "style": true
-      }
-    ]
+          "libraryName": "antd",
+          "libraryDirectory": "es",
+          "style": true
+      },
+      "antd"
+  ],
+  [
+      "import",
+      {
+          "libraryName": "lodash",
+          "libraryDirectory": "",
+          "camel2DashComponentName": false
+      },
+      "lodash"
+  ],
+    "react-hot-loader/babel"
   ]
 }
