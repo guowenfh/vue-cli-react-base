@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
+    "dev-mock": "cross-env mock=true npm run dev",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.jsx src",
     "fix": "eslint src/**/**/*.js,src/**/**/*.jsx --fix",
@@ -76,6 +77,7 @@
     "less-loader": "~4.1.0",
     "lint-staged": "~8.1.5",
     "mini-css-extract-plugin": "~0.5.0",
+    "mockjs": "^1.0.1-beta3",
     "node-notifier": "~5.1.2",
     "optimize-css-assets-webpack-plugin": "~5.0.1",
     "ora": "~3.4.0",

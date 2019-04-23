@@ -1,4 +1,4 @@
-import { post } from './fetch'
+import { post, get } from './fetch'
 
 /**
  * 获取字体生成的返回。
@@ -23,4 +23,12 @@ export function userLogin() {
  */
 export function getUserInfo() {
   return Promise.resolve({})
+}
+/**
+ * 获取订单
+ * @param {any} [fontMap={}]
+ * @returns
+ */
+export function getTrade() {
+  return get('/api/getTrade')
 }
